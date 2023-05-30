@@ -4,7 +4,7 @@ import time
 
 class PID:
 
-    def __init__(self, kp: float, tn: float, tv: float, target: float):
+    def __init__(self, kp: float, tn: float, tv: float):
         self.kp = kp
         if tn == 0:
             self.ki = 0
@@ -15,7 +15,7 @@ class PID:
         else:
             self.kd = kp / tv
         self.tau = 0
-        self.target = target
+        self.target = 0
         self.last_time = time.time()
         self.e_last = 0
         self.e_sum = 0
@@ -41,7 +41,8 @@ class PID:
         i = self.ki * self.e_sum
         d = self.kd * (e - self.e_last)
 
-        u = self.cap(p + i + d, 2, -1)
+        u = p + i + d
+        # u = self.cap(u, 2, -1)
 
         self.e_last = e
         return u, p, i, d
